@@ -1,0 +1,28 @@
+=> User
+1. name
+2. email
+3. password
+
+=> Hero Section
+1. hero title
+2. hero desc
+3. hero img
+4. logo (optional)
+
+=> About Section
+1. about txt
+2. about img 
+3. resume
+
+=> Projects Section
+1. project title
+2. project desc
+3. project img
+4. project link
+
+=> Chat Section
+1. chat link
+
+// 
+1. default.png
+2. resume.pdf
