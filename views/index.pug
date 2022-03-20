@@ -1,0 +1,114 @@
+- let link = `${protocol}://${host}:${port}`
+mixin link(title, path, method = 'get', isProtected = true)
+
+     li
+        span #{title} (Method:
+            span.met #{String(method).toUpperCase()}
+            | )
+        p #{link + path + ' '}
+            if (isProtected)
+                span.pro (protected)
+            else
+                span.pub (public)
+
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title= title
+        link(rel="shortcut icon", href="./assets/favicon.png", type="image/x-icon")
+        style.
+            body {
+                background-color: black;
+                color: white;
+                font-family: sans-serif;
+                padding: 20px;
+            }
+
+            header {
+                margin-top: 20px;
+            }
+
+            h1 {
+                text-align: center;
+                font-weight: 300;
+                margin: 25px 0;
+            }
+
+            main {
+                //- display: grid;
+                //- grid-template-columns: 1fr 1fr 1fr;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            div {
+                margin: 10px;
+                flex-grow: 1;
+            }
+
+            ul {
+                padding-left: 20px;
+            }
+
+            h3 {
+                padding-left: 10px;
+            }
+
+            span {
+                color: #888;
+            }
+
+            .pro {
+                color: #bc1ca0;
+            }
+
+            .pub {
+                color: green;
+            }
+
+            .met {
+                color: #6795fce6;
+            }
+
+            p {
+                color: #ccc;
+                letter-spacing: 0.2px;
+                margin-top: 5px;
+            }
+    body
+        header
+            h1= title
+            hr/
+
+        main
+            div
+                h3 Users
+                hr/
+                ul
+                    +link('Get All Users', '/api/users/', 'get', false)
+                    +link('Get Single User', '/api/users/:id', 'get', false)
+                    +link('SignUp User', '/api/users/signup', 'post',false)
+                    +link('Login Users', '/api/users/login', 'post', false)
+                    +link('Update User', '/api/users/update', 'put')
+                    +link('Delete User', '/api/users/delete', 'delete')
+
+            div 
+                h3 Projects
+                hr/
+                ul
+                    +link('Get All Projects', '/api/projects/', 'get', false)
+                    +link('Get Single Project', '/api/projects/:id', 'get', false)
+                    +link('Create Project', '/api/projects/create', 'post')
+                    +link('Update Projects', '/api/projects/update/:id', 'put')
+                    +link('DeleteProjects', '/api/projects/delete/:id', 'delete')
+            div
+                h3 Site Info
+                hr/
+                ul
+                    +link('Create Site Data', '/api/data/create', 'post')
+                    +link('Get All Site Data', '/api/data', 'get', false)
+                    +link('Update Site Data', '/api/data/update/:id', 'put')

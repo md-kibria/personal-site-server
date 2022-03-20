@@ -11,8 +11,14 @@ const dataRouter = require('./routes/data')
 
 const app = express()
 
+// setup view engine
+app.set('view engine', 'pug')
+
 // dot env configuration
 dotEnv.config()
+
+// define the port number
+const PORT = process.env.PORT || 8080
 
 // passport configuration
 app.use(passport.initialize())
@@ -26,15 +32,59 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // public route
 app.use('/files', express.static('public/uploads'))
 
-// root route 
-app.get('/', (req, res) => {
-    res.end('Hello World')
-})
 
 // routes
 app.use('/api/users', userRouter)
 app.use('/api/projects', projectRouter)
 app.use('/api/data', dataRouter)
+
+// root route 
+app.get('/', (req, res) => {
+    res.locals = {
+        protocol: req.protocol,
+        host: req.hostname,
+        port: PORT
+    }
+    res.render('index', {title: 'Site Map'})
+})
+
+// 404 Error Hanle
+app.use((req, res, next) => {
+    res.status(404).json({
+        errors: {
+            common: {
+                msg: 'Not found!'
+            }
+        }
+    })
+})
+
+// Error Handle
+app.use((err, req, res, next) => {
+    console.log(err)
+    if (res.headerSend) {
+        next('There was a problem!')
+    } else {
+        if (err.message) {
+            res.status(500).json({
+                errors: {
+                    common: {
+                        msg: err.message
+                    }
+                }
+            })
+        } else {
+            res.status(500).json({
+                errors: {
+                    common: {
+                        msg: 'There was a problem!'
+                    }
+                }
+            })
+        }
+    }
+})
+
 
 // connect mongodb
 mongoose.connect(
@@ -48,7 +98,6 @@ mongoose.connect(
 );
 
 // app listening
-const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`)
 })

@@ -23,6 +23,6 @@
 => Chat Section
 1. chat link
 
-// 
+// default files
 1. default.png
 2. resume.pdf
